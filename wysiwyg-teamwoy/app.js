@@ -130,3 +130,8 @@ function applyControl(control) {
 	controlsConfig[control.id] = parent[name.toLowerCase()] || !controlsConfig[control.id];
 	control.className = controlsConfig[control.id] ? "btn-active" : "";
 }
+
+function sendData() {
+	localStorage.setItem("postData", inputArea.innerHTML);
+	window.location.href = "wysiwyg-teamwoy/post.html";
+}
