@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Text editor</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="app.css">
+</head>
+<body>
+	<div id="wysiwyg">
+		<div id="controls">
+			<button id="B" onclick="applyEditing(this, 'bold')" title="bold"><i class="fa fa-bold"></i></button>
+			<button id="I" onclick="applyEditing(this, 'italic')" title="italic"><i class="fa fa-italic"></i></button>
+			<button id="U" onclick="applyEditing(this, 'underline')" title="underline"><i class="fa fa-underline"></i></button>
+			<button id="STRIKE" onclick="applyEditing(this, 'strikeThrough')" title="strikethrough"><i class="fa fa-strikethrough"></i></button>
+			<input id="COLOR" type="color" onchange="applyEditing(false, 'foreColor', this.value)">
+			<select id="SIZE" onchange="applyEditing(false, 'fontsize', this[this.selectedIndex].value)" title="font size">
+				<option value="1">Tiny</option>
+				<option value="2">Small</option>
+				<option selected value="3">Normal</option>
+				<option value="4">Big</option>
+				<option value="5">Large</option>
+				<option value="6">Huge</option>
+				<option value="7">Maximum</option>
+			</select>
+			<button id="UL" onclick="applyEditing(this, 'insertUnorderedList')" title="unordered list"><i class="fa fa-list-ul"></i></button>
+			<button id="OL" onclick="applyEditing(this, 'insertOrderedList')" title="ordered list"><i class="fa fa-list-ol"></i></button>
+			<button onclick="applyEditing(false, 'undo'); updateControls()"><i class="fa fa-undo" title="undo"></i></button>
+			<button onclick="applyEditing(false, 'redo'); updateControls()"><i class="fa fa-repeat" title="redo"></i></button>
+			<button onclick="insertImageURL()" title="insert image via URL"><i class="fa fa-picture-o"></i></button>
+		</div>
+		<div id="input-area" contenteditable="true"></div>
+	</div>
+	<script src="app.js"></script>
+</body>
+</html>

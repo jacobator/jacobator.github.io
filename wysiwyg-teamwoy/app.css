@@ -1,0 +1,29 @@
+#wysiwyg {
+	text-align: center;
+}
+
+#input-area {
+	max-width: 500px;
+	height: 200px;
+	border: 1px solid #959595;
+	padding: 5px;
+	outline: none;
+	overflow: auto;
+	margin: 5px auto;
+	text-align: left;
+}
+
+.dragging {
+	background: #eee;
+}
+
+.btn-active {
+	color: #eee;
+	background: #959595;
+	border: 1px solid #000;
+}
+
+button {
+	background: #eee;
+	border: 1px solid #959595;
+}
