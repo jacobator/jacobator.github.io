@@ -133,5 +133,5 @@ function applyControl(control) {
 
 function sendData() {
 	localStorage.setItem("postData", inputArea.innerHTML);
-	window.location.href = "wysiwyg-teamwoy/post.html";
+	window.location.href = "post.html";
 }
