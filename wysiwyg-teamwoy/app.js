@@ -21,8 +21,8 @@ inputArea.onpaste = function(e) {
 	}
 	else if (item.type.match(/text.*/)) {
 		item.getAsString(function(data) {
-			//applyEditing(false, "insertHTML", data); //по завданню зрозумів що HTML треба вставляти просто текстом
-			applyEditing(false, "insertText", data);
+			//document.execCommand("insertHTML", false, data); //по завданню зрозумів що HTML треба вставляти просто текстом
+			document.execCommand("insertText", false, data);
 		});
 	}
 };
@@ -36,28 +36,39 @@ inputArea.ondrop = function(e) {
 	insertImageFile(file);
 };
 
-inputArea.onmouseup = updateControls;
-inputArea.onkeyup = updateControls;
+inputArea.onmouseup = function() {
+	resetControlsConfig();
+	updateControls();
+};
+inputArea.onkeyup = function() {
+	resetControlsConfig();
+	updateControls();
+};
 
-function applyEditing(btn, cmd, val) {
+function applyEditing(param, cmd, val) {
 	document.execCommand(cmd, false, val);
-	inputArea.focus();
-	if (btn) {
-		applyControl(btn);
+	setControlsParam(param, val);
+	if (param === "UL") {
+		controlsConfig.OL = false;
 	}
+	if (param === "OL") {
+		controlsConfig.UL = false;
+	}
+	applyControlsConfig();
+	inputArea.focus();
 }
 
 function insertImageURL() {
 	var imgUrl = prompt('Enter a URL:\n(Or just drop an image from your PC to the editor area)', 'http://');
 	if ((imgUrl != null) && (imgUrl != "")) {
-		applyEditing(false, "insertImage", imgUrl);
+		document.execCommand("insertImage", false, imgUrl);
 	}
 }
 
 function insertImageFile(file) {
 	var reader = new FileReader();
 	reader.onload = function(e) {
-		applyEditing(false, "insertImage", e.target.result);
+		document.execCommand("insertImage", false, e.target.result);
 	};
 	reader.readAsDataURL(file);
 }
@@ -86,10 +97,9 @@ function resetControlsConfig() {
 
 function updateControls() {
 	var cursorNode = document.getSelection().anchorNode;
-	if (cursorNode.id === "input-area") {
-		return;
-	}
-	resetControlsConfig();
+	//if (cursorNode.id === "input-area") {
+	//	return;
+	//}
 	updateControlsConfig(cursorNode);
 	applyControlsConfig();
 }
@@ -101,7 +111,7 @@ function updateControlsConfig(node) {
 			var name = parent.size ? "SIZE" : "COLOR";
 			setControlsParam(name, parent[name.toLowerCase()]);
 		}
-		else {
+		else if (parent.nodeName !== "LI") {
 			setControlsParam(parent.nodeName);
 		}
 		updateControlsConfig(parent);
@@ -109,7 +119,7 @@ function updateControlsConfig(node) {
 }
 
 function setControlsParam(param, val) {
-	controlsConfig[param] = val || true;
+	controlsConfig[param] = val || !controlsConfig[param];
 }
 
 function applyControlsConfig() {
@@ -124,11 +134,6 @@ function applyControlsConfig() {
 			control.className = controlsConfig[control.id] ? "btn-active" : "";
 		}
 	});
-}
-
-function applyControl(control) {
-	controlsConfig[control.id] = parent[name.toLowerCase()] || !controlsConfig[control.id];
-	control.className = controlsConfig[control.id] ? "btn-active" : "";
 }
 
 function sendData() {
